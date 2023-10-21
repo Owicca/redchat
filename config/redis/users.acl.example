@@ -1,0 +1,2 @@
+user root on +@all &* ~* >root
+user user on +@all &* ~* >user

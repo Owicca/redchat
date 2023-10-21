@@ -1,0 +1,5 @@
+aclfile /etc/redis/users.acl
+
+bind-source-addr 0.0.0.0
+
+protected-mode no

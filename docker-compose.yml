@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  rc_rds:
+    image: redis/redis-stack-server:7.2.0-v4
+    container_name: rc_rds
+    ports:
+      - 0.0.0.0:6379:6379
+    volumes:
+      - ./data/redis:/data/
+      - ./config/redis/redis.conf:/etc/redis/redis.conf
+      - ./config/redis/users.acl:/etc/redis/users.acl
+    command: redis-server /etc/redis/redis.conf
+
+  rc_rds_adm:
+    image: redislabs/redisinsight:latest
+    container_name: rc_rds_adm
+    ports:
+      - 127.0.0.1:8001:8001
+
+  rc_cl:
+    image: node:21.0-alpine
+    container_name: rc_cl
+    ports:
+      - 127.0.0.1:1234:1234
+    volumes:
+      - ./data/chat/:/app/
+    working_dir: /app/
+    # command: watch -n 10 date
+    command: npm run dev

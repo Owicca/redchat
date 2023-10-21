@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+import sys, subprocess, argparse
+
+
+PREFIX = "rc"
+FRONT_IMAGE = "node:21.0-alpine"
+
+class Choices(object):
+    up = "up"
+    start = "start"
+    stop = "stop"
+    stats = "stats"
+    ps = "ps"
+
+    chat = "chat"
+    rds = "rds"
+    rds_user = "rds-user"
+
+ch = Choices()
+
+choices = [x.replace("_", "-") for x in dir(ch) if not x.startswith('__')]
+
+parser = argparse.ArgumentParser()
+parser.add_argument("task", choices=choices)
+args = parser.parse_args()
+
+task = args.task
+def c(cmd: str):
+    return subprocess.run(cmd, shell=True)
+
+if task == Choices.up:
+    c(f"docker compose up -d --build --force-recreate --remove-orphans")
+    c(f"docker compose ps")
+elif task == Choices.start:
+    c(f"docker compose restart")
+    c(f"docker compose ps")
+elif task == Choices.stop:
+    c(f"docker compose stop")
+    c(f"docker compose ps")
+elif task == Choices.stats:
+    c(f"docker ps -q --filter \"name={PREFIX}-*\" | xargs docker stats")
+elif task == Choices.ps:
+    c(f"docker compose ps")
+elif task == Choices.chat:
+    c(f"docker exec -it {PREFIX}_cl sh")
+elif task == Choices.rds:
+    c(f"docker run -ti --rm redis/redis-stack-server:7.2.0-v4 redis-cli -h 10.247.12.224 --user root --pass root")
+elif task == Choices.rds_user:
+    c(f"docker run -ti --rm redis/redis-stack-server:7.2.0-v4 redis-cli -h 10.247.12.224 --user user --pass user")

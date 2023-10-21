@@ -1,0 +1,9 @@
+/data/redis/*
+!/data/redis/.gitkeep
+
+/data/chat/node_modules/
+/data/chat/dist/
+/data/chat/.parcel-cache/
+
+/config/redis/redis.conf
+/config/redis/users.acl
