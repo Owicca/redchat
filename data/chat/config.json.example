@@ -1,0 +1,8 @@
+{
+  "addr"  : "localhost:6379",
+  "user"  : "root",
+  "pass"  : "root",
+  "user1" : "user",
+  "pass1" : "user",
+  "stream": "stream1"
+}
